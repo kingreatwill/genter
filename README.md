@@ -1,0 +1,2 @@
+# genter
+go
