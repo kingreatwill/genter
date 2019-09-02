@@ -1,40 +1,40 @@
 package chain
 
-import "net/http"
+import (
+	"github.com/openjw/genter/x/context"
+)
 
 type Chain struct {
-	hs []func(http.Handler) http.Handler
+	fns []func(*context.Context) (next bool, err error)
 }
 
-func New(handlers ...func(http.Handler) http.Handler) *Chain {
-	return &Chain{hs: handlers}
+func New(fns ...func(*context.Context) (bool, error)) *Chain {
+	return &Chain{fns: fns}
 }
 
-func (c *Chain) Append(handlers ...func(http.Handler) http.Handler) *Chain {
-	c = New(appendHandlers(c.hs, handlers...)...)
-
+func (c *Chain) Append(fns ...func(*context.Context) (bool, error)) *Chain {
+	c.fns = append(c.fns, fns...)
 	return c
 }
 
-// Merge receives one or more Chain instances, and returns a merged Chain.
 func (c *Chain) Merge(chains ...*Chain) *Chain {
 	for k := range chains {
-		c = New(appendHandlers(c.hs, chains[k].hs...)...)
+		c.Append(chains[k].fns...)
 	}
-
 	return c
 }
 
-func appendHandlers(hs []func(http.Handler) http.Handler, ahs ...func(http.Handler) http.Handler) []func(http.Handler) http.Handler {
-	lcur := len(hs)
-	ltot := lcur + len(ahs)
-	if ltot > cap(hs) {
-		nhs := make([]func(http.Handler) http.Handler, ltot)
-		copy(nhs, hs)
-		hs = nhs
+func (c *Chain) Execute(context *context.Context) error {
+	for _, fn := range c.fns {
+		b, err := fn(context)
+		if !b {
+			return err
+		}
 	}
+	return nil
+}
 
-	copy(hs[lcur:], ahs)
-
-	return hs
+func (c *Chain) Run(val interface{}) error {
+	ctx := ContextWithValue(context.Background(), val)
+	return c.Execute(ctx)
 }
