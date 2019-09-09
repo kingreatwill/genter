@@ -420,14 +420,21 @@ func setFieldValue(fieldValue reflect.Value, fieldKind reflect.Kind, value inter
 		} else if DefaultTimeWrapper.IsType(fieldValue) {
 			var timeString string
 			if fieldValue.Type() == timeType {
-				timeString = ""
-				fieldValue.Set(reflect.ValueOf(value))
+				if _, ok := value.(time.Time); ok {
+					timeString = ""
+					fieldValue.Set(reflect.ValueOf(value))
+				}
 			}
 			if fieldValue.Type() == jsonTimeType {
-				timeString = ""
-				var t2 time2.Time
-				t2.Time = value.(time.Time)
-				fieldValue.Set(reflect.ValueOf(t2))
+				if _, ok := value.(time.Time); ok {
+					timeString = ""
+					var t2 time2.Time
+					t2.Time = value.(time.Time)
+					fieldValue.Set(reflect.ValueOf(t2))
+				} else if _, ok := value.(time2.Time); ok {
+					timeString = ""
+					fieldValue.Set(reflect.ValueOf(value))
+				}
 			}
 			switch d := value.(type) {
 			case []byte:
@@ -451,14 +458,26 @@ func setFieldValue(fieldValue reflect.Value, fieldKind reflect.Kind, value inter
 					t, err := time.ParseInLocation(formatDateTime, timeString, time.UTC)
 					if err == nil {
 						t = t.In(time.UTC)
-						fieldValue.Set(reflect.ValueOf(t))
+						if fieldValue.Type() == jsonTimeType {
+							var t2 time2.Time
+							t2.Time = t
+							fieldValue.Set(reflect.ValueOf(t2))
+						} else {
+							fieldValue.Set(reflect.ValueOf(t))
+						}
 					}
 				} else if len(timeString) >= 10 {
 					//满足yyyy-MM-dd格式
 					timeString = timeString[:10]
 					t, err := time.ParseInLocation(formatDate, timeString, time.UTC)
 					if err == nil {
-						fieldValue.Set(reflect.ValueOf(t))
+						if fieldValue.Type() == jsonTimeType {
+							var t2 time2.Time
+							t2.Time = t
+							fieldValue.Set(reflect.ValueOf(t2))
+						} else {
+							fieldValue.Set(reflect.ValueOf(t))
+						}
 					}
 				}
 			}

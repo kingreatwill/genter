@@ -156,8 +156,25 @@ func Test_MapperMap(t *testing.T) {
 	fromMap["Name"] = "test"
 	fromMap["Sex"] = true
 	fromMap["Age"] = 10
-	fromMap["Time"] = validateTime
+	fromMap["Time"] = "2017-01-01 10:00:00"
 	fromMap["Time2"] = validateTime
+	toObj := &testStruct{}
+	err := MapperMap(fromMap, toObj)
+	if err != nil && toObj.Time != validateTime {
+		t.Error("RunResult error: mapper error", err)
+	} else {
+		t.Log("RunResult success:", toObj)
+	}
+}
+
+func Test_MapperMap_2(t *testing.T) {
+	validateTime, _ := time.Parse("2006-01-02 15:04:05", "2017-01-01 10:00:00")
+	fromMap := make(map[string]interface{})
+	fromMap["Name"] = "test"
+	fromMap["Sex"] = "true"
+	fromMap["Age"] = "10"
+	fromMap["Time"] = validateTime
+	fromMap["Time2"] = "2017-01-01 10:00:00"
 	toObj := &testStruct{}
 	err := MapperMap(fromMap, toObj)
 	if err != nil && toObj.Time != validateTime {

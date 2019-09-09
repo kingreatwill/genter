@@ -18,3 +18,9 @@ func ExampleWithIs() {
 	fmt.Printf("%+v", cause)
 	// Output:
 }
+
+func Example_1() {
+	w := fmt.Errorf("FFF:%w", errors.New("123"))
+	fmt.Println(w)
+	// Output:
+}
