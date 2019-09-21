@@ -54,12 +54,9 @@ func isZero(v reflect.Value) bool {
 			}
 		}
 		return true
-	case reflect.Invalid:
-		return true
-	default:
-		panic(v.Kind())
-		// This should never happens, but will act as a safeguard for
-		// later, as a default value doesn't makes sense here.
-		return false
+	//case reflect.Invalid:
+	//	return true
+	default: // reflect.Invalid, Complex64, reflect.Complex128;
+		return reflect.DeepEqual(v.Interface(), reflect.Zero(v.Type()).Interface())
 	}
 }
