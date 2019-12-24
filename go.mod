@@ -12,8 +12,10 @@ require (
 	github.com/jinzhu/gorm v1.9.11
 	github.com/json-iterator/go v1.1.8
 	github.com/mattn/go-colorable v0.1.4 // indirect
+	github.com/mattn/go-runewidth v0.0.7 // indirect
 	github.com/opentracing/opentracing-go v1.1.0
 	github.com/panjf2000/gnet v1.0.0-rc.3
+	github.com/shiyanlou/termbox-go v0.0.0-20170327202638-7994c181db77
 	github.com/streadway/amqp v0.0.0-20190827072141-edfb9018d271
 	github.com/uber-go/atomic v1.4.0 // indirect
 	github.com/uber/jaeger-client-go v2.19.0+incompatible
