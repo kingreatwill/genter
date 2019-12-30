@@ -19,6 +19,8 @@ https://www.toutiao.com/a6719703688031502861/
 内存优化之struct对齐
 https://www.jianshu.com/p/d314db5b3378
 
+[在 Go 中恰到好处的内存对齐](https://studygolang.com/articles/20914)
+[什么是内存对齐？Go 是否有必要内存对齐？](https://www.toutiao.com/a6775096809460072971)
 https://my.oschina.net/u/2950272/blog/1829197
 
 有个工具可以检查我忘记了，不知道是不是golangci-lint
