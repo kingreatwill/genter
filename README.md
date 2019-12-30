@@ -9,6 +9,8 @@ go 源码学习：https://www.zhihu.com/question/327615791/answer/756625130
 
 https://github.com/whjstc/openbilibili-go-common-1
 
+[Go语言回顾：从Go 1.0到Go 1.13](https://tonybai.com/2019/09/07/go-retrospective/)
+
 类百度文库
 https://github.com/TruthHun/DocHub
 
