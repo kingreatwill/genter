@@ -6,10 +6,12 @@ import (
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/fields"
+	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/cache"
 	"k8s.io/client-go/tools/clientcmd"
+	"k8s.io/client-go/util/retry"
 	"os"
 	"os/signal"
 )
@@ -69,6 +71,18 @@ func main() {
 	}
 	c.Run()
 
+	label := labels.SelectorFromSet(labels.Set(map[string]string{"label": "lb"}))
+	deployments, err := clientset.ExtensionsV1beta1().Deployments("namespace").List(metav1.ListOptions{LabelSelector: label.String()})
+
+	for _, item := range deployments.Items {
+		item.ObjectMeta.Labels["lb"] = "xxxx"
+		item.Spec.Template.Labels["lb"] = "xxxx"
+
+		retry.RetryOnConflict(retry.DefaultRetry, func() error {
+			_, err := clientset.ExtensionsV1beta1().Deployments("namespace").Update(&item)
+			return err
+		})
+	}
 	q := make(chan os.Signal)
 	signal.Notify(q, os.Interrupt)
 	<-q
