@@ -6,6 +6,7 @@ require (
 	github.com/codahale/hdrhistogram v0.0.0-20161010025455-3a0bb77429bd // indirect
 	github.com/fatih/color v1.7.0
 	github.com/garyburd/redigo v1.6.0
+	github.com/getlantern/systray v0.0.0-20191219131235-d922a91190d8
 	github.com/gin-gonic/gin v1.4.0
 	github.com/golang/protobuf v1.3.2
 	github.com/imdario/mergo v0.3.8 // indirect
