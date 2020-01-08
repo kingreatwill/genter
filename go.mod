@@ -3,6 +3,7 @@ module github.com/openjw/genter
 go 1.12
 
 require (
+	github.com/clipperhouse/typewriter v0.0.0-20200107164453-d21420026310 // indirect
 	github.com/codahale/hdrhistogram v0.0.0-20161010025455-3a0bb77429bd // indirect
 	github.com/fatih/color v1.7.0
 	github.com/garyburd/redigo v1.6.0
