@@ -18,13 +18,13 @@ require (
 	github.com/opentracing/opentracing-go v1.1.0
 	github.com/panjf2000/gnet v1.0.0-rc.3
 	github.com/shiyanlou/termbox-go v0.0.0-20170327202638-7994c181db77
+	github.com/smasher164/mem v0.0.0-20191114064341-4e07bd0f0d69
 	github.com/streadway/amqp v0.0.0-20190827072141-edfb9018d271
 	github.com/uber-go/atomic v1.4.0 // indirect
 	github.com/uber/jaeger-client-go v2.19.0+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
 	github.com/urfave/negroni v1.0.0
 	go.uber.org/atomic v1.4.0 // indirect
-	golang.org/x/sys v0.0.0-20191105231009-c1f44814a5cd // indirect
 	google.golang.org/grpc v1.24.0
 	gopkg.in/yaml.v2 v2.2.4
 	k8s.io/api v0.17.0

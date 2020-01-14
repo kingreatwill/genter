@@ -1,19 +1,62 @@
 package main
 
+/*
+   #include <stdlib.h>
+*/
+import "C"
 import (
 	"fmt"
-	"github.com/smasher164/mem"
 	"unsafe"
 )
 
 type Slice struct {
-	Data unsafe.Pointer //万能指针类型
+	Data unsafe.Pointer //万能指针类型 对应C语言中的void*
 	len  int            //有效的长度
 	cap  int            //有效的容量
 }
 
 //指针操作的偏移值
 const TAG = 8
+
+/*
+func main() {
+	//定义一个切片
+	//1、数据内存地址 2、len 有效数据长度 3、cap 可扩容的有效容量  24字节
+	var s []int
+
+	//unsafe.Sizeof 计算数据类型在内存中占的字节大小
+	fmt.Println(unsafe.Sizeof(s))
+}
+*/
+/*
+func main(){
+	var i interface{}
+	i=10//只支持== !=
+
+	//类型断言  是基于接口类型数据的转换
+	//value,ok:=i.(int)
+	//if ok{
+	//	fmt.Println("整型数据：",value)
+	//	fmt.Printf("%T\n",value)
+	//}
+	//反射获取接口的数据类型
+	//t:=reflect.TypeOf(i)
+	//fmt.Println(t)
+
+	//反射获取接口类型数据的值
+	v:=reflect.ValueOf(i)
+	fmt.Println(v)
+
+	i1:=10
+	i2:=20
+
+	if reflect.Typeof(i1)==reflect.Typeof(i2){
+		v1:=reflect.Valueof(i1)
+		v2:=reflect.Valueof(i2)
+		结果=v1+v2
+	}
+}
+*/
 
 func main() {
 
@@ -67,9 +110,9 @@ func (s *Slice) Create(l int, c int, Data ...int) {
 		return
 	}
 	//ulonglong unsigned long long  无符号的长长整型
-	//开辟空间 存储数据
+	//通过C语言代码开辟空间 存储数据
 	//如果堆空间开辟失败 返回值为NULL 相当于nil 内存地址编号为0的空间
-	s.Data = mem.Alloc(uint(c) * 8)
+	s.Data = C.malloc(C.ulonglong(c) * 8)
 	s.len = l
 	s.cap = c
 
@@ -113,7 +156,7 @@ func (s *Slice) Append(Data ...int) {
 	if s.len+len(Data) > s.cap {
 		//扩充容量
 		//C.realloc(指针,字节大小)
-		s.Data = mem.Alloc(uint(s.cap) * 2 * 8) //C.realloc(s.Data, C.ulonglong(s.cap)*2*8)
+		s.Data = C.realloc(s.Data, C.ulonglong(s.cap)*2*8)
 		//改变容量的值
 		s.cap = s.cap * 2
 	}
@@ -245,7 +288,7 @@ func (s *Slice) Insert(index int, Data int) {
 //销毁切片
 func (s *Slice) Destroy() {
 	//调用C语言  适释放堆空间
-	mem.Free(s.Data)
+	C.free(s.Data)
 	s.Data = nil
 	s.len = 0
 	s.cap = 0
