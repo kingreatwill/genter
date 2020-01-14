@@ -20,6 +20,7 @@ require (
 	github.com/shiyanlou/termbox-go v0.0.0-20170327202638-7994c181db77
 	github.com/smasher164/mem v0.0.0-20191114064341-4e07bd0f0d69
 	github.com/streadway/amqp v0.0.0-20190827072141-edfb9018d271
+	github.com/tensorflow/tensorflow v2.1.0+incompatible // indirect
 	github.com/uber-go/atomic v1.4.0 // indirect
 	github.com/uber/jaeger-client-go v2.19.0+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
