@@ -13,6 +13,8 @@ require (
 	github.com/imdario/mergo v0.3.8 // indirect
 	github.com/jinzhu/gorm v1.9.11
 	github.com/json-iterator/go v1.1.8
+	github.com/klauspost/compress v1.9.7 // indirect
+	github.com/klauspost/cpuid v1.2.2 // indirect
 	github.com/mattn/go-colorable v0.1.4 // indirect
 	github.com/mattn/go-runewidth v0.0.7 // indirect
 	github.com/opentracing/opentracing-go v1.1.0
@@ -25,6 +27,7 @@ require (
 	github.com/uber/jaeger-client-go v2.19.0+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
 	github.com/urfave/negroni v1.0.0
+	github.com/valyala/fasthttp v1.8.0
 	go.uber.org/atomic v1.4.0 // indirect
 	google.golang.org/grpc v1.24.0
 	gopkg.in/yaml.v2 v2.2.4
