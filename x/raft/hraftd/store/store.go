@@ -1,10 +1,7 @@
-// Package store provides a simple distributed key-value store. The keys and
-// associated values are changed via distributed consensus, meaning that the
-// values are changed only when a majority of nodes in the cluster agree on
-// the new value.
+// 包存储提供了一个简单的分布式键值存储。
+// 密钥和相关联的值通过分布式一致性进行更改，这意味着只有当集群中的大多数节点同意新值时，这些值才会更改。
 //
-// Distributed consensus is provided via the Raft algorithm, specifically the
-// Hashicorp implementation.
+//分布式一致性是通过Raft算法提供的，特别是Hashicorp实现。
 package store
 
 import (
@@ -33,7 +30,7 @@ type command struct {
 	Value string `json:"value,omitempty"`
 }
 
-// Store is a simple key-value store, where all changes are made via Raft consensus.
+// Store是一个简单的关键价值存储，所有的改变都是通过Raft协商一致来实现的。
 type Store struct {
 	RaftDir  string
 	RaftBind string
@@ -42,7 +39,7 @@ type Store struct {
 	mu sync.Mutex
 	m  map[string]string // The key-value store for the system.
 
-	raft *raft.Raft // The consensus mechanism
+	raft *raft.Raft // 共识机制
 
 	logger *log.Logger
 }
@@ -56,15 +53,14 @@ func New(inmem bool) *Store {
 	}
 }
 
-// Open opens the store. If enableSingle is set, and there are no existing peers,
-// then this node becomes the first node, and therefore leader, of the cluster.
-// localID should be the server identifier for this node.
+//打开存储。如果enableSingle被设置，并且没有现有的对等体，那么这个节点成为集群的第一个节点，并因此成为集群的领导者。
+//localID应该是此节点的服务器标识符。
 func (s *Store) Open(enableSingle bool, localID string) error {
-	// Setup Raft configuration.
+	// 设置Raft的配置.
 	config := raft.DefaultConfig()
 	config.LocalID = raft.ServerID(localID)
 
-	// Setup Raft communication.
+	// 设置Raft的通信.
 	addr, err := net.ResolveTCPAddr("tcp", s.RaftBind)
 	if err != nil {
 		return err
@@ -74,13 +70,13 @@ func (s *Store) Open(enableSingle bool, localID string) error {
 		return err
 	}
 
-	// Create the snapshot store. This allows the Raft to truncate the log.
+	// 创建快照存储。 允许Raft截断日志.
 	snapshots, err := raft.NewFileSnapshotStore(s.RaftDir, retainSnapshotCount, os.Stderr)
 	if err != nil {
 		return fmt.Errorf("file snapshot store: %s", err)
 	}
 
-	// Create the log store and stable store.
+	// 创建日志存储和稳定存储。
 	var logStore raft.LogStore
 	var stableStore raft.StableStore
 	if s.inmem {
@@ -95,7 +91,7 @@ func (s *Store) Open(enableSingle bool, localID string) error {
 		stableStore = boltDB
 	}
 
-	// Instantiate the Raft systems.
+	// 实例化Raft系统。
 	ra, err := raft.NewRaft(config, (*fsm)(s), logStore, stableStore, snapshots, transport)
 	if err != nil {
 		return fmt.Errorf("new raft: %s", err)
@@ -163,8 +159,8 @@ func (s *Store) Delete(key string) error {
 	return f.Error()
 }
 
-// Join joins a node, identified by nodeID and located at addr, to this store.
-// The node must be ready to respond to Raft communications at that address.
+// 加入一个node节点, 由nodeID标识和addr地址.
+// 节点必须准备好响应该地址的Raft通信。
 func (s *Store) Join(nodeID, addr string) error {
 	s.logger.Printf("received join request for remote node %s at %s", nodeID, addr)
 
@@ -175,8 +171,8 @@ func (s *Store) Join(nodeID, addr string) error {
 	}
 
 	for _, srv := range configFuture.Configuration().Servers {
-		// If a node already exists with either the joining node's ID or address,
-		// that node may need to be removed from the config first.
+		//如果一个节点已经存在，或者加入节点的ID或地址，
+		//可能需要先从配置中删除该节点。
 		if srv.ID == raft.ServerID(nodeID) || srv.Address == raft.ServerAddress(addr) {
 			// However if *both* the ID and the address are the same, then nothing -- not even
 			// a join operation -- is needed.
@@ -202,7 +198,7 @@ func (s *Store) Join(nodeID, addr string) error {
 
 type fsm Store
 
-// Apply applies a Raft log entry to the key-value store.
+// Apply将Raft日志条目应用于键值存储。
 func (f *fsm) Apply(l *raft.Log) interface{} {
 	var c command
 	if err := json.Unmarshal(l.Data, &c); err != nil {
@@ -219,7 +215,7 @@ func (f *fsm) Apply(l *raft.Log) interface{} {
 	}
 }
 
-// Snapshot returns a snapshot of the key-value store.
+// Snapshot返回键值存储的快照。
 func (f *fsm) Snapshot() (raft.FSMSnapshot, error) {
 	f.mu.Lock()
 	defer f.mu.Unlock()
@@ -232,15 +228,14 @@ func (f *fsm) Snapshot() (raft.FSMSnapshot, error) {
 	return &fsmSnapshot{store: o}, nil
 }
 
-// Restore stores the key-value store to a previous state.
+// Restore将键值存储存储到以前的状态。
 func (f *fsm) Restore(rc io.ReadCloser) error {
 	o := make(map[string]string)
 	if err := json.NewDecoder(rc).Decode(&o); err != nil {
 		return err
 	}
 
-	// Set the state from the snapshot, no lock required according to
-	// Hashicorp docs.
+	// 根据快照设置状态，根据Hashicorp文档无需锁定。
 	f.m = o
 	return nil
 }
@@ -265,7 +260,7 @@ type fsmSnapshot struct {
 
 func (f *fsmSnapshot) Persist(sink raft.SnapshotSink) error {
 	err := func() error {
-		// Encode data.
+		// 序列化数据.
 		b, err := json.Marshal(f.store)
 		if err != nil {
 			return err
