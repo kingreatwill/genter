@@ -10,6 +10,8 @@ require (
 	github.com/getlantern/systray v0.0.0-20191219131235-d922a91190d8
 	github.com/gin-gonic/gin v1.4.0
 	github.com/golang/protobuf v1.3.2
+	github.com/hashicorp/raft v1.1.1
+	github.com/hashicorp/raft-boltdb v0.0.0-20191021154308-4207f1bf0617
 	github.com/imdario/mergo v0.3.8 // indirect
 	github.com/jinzhu/gorm v1.9.11
 	github.com/json-iterator/go v1.1.8
