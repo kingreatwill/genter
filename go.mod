@@ -9,7 +9,7 @@ require (
 	github.com/garyburd/redigo v1.6.0
 	github.com/getlantern/systray v0.0.0-20191219131235-d922a91190d8
 	github.com/gin-gonic/gin v1.4.0
-	github.com/golang/protobuf v1.3.2
+	github.com/golang/protobuf v1.4.0-rc.4
 	github.com/hashicorp/raft v1.1.1
 	github.com/hashicorp/raft-boltdb v0.0.0-20191021154308-4207f1bf0617
 	github.com/imdario/mergo v0.3.8 // indirect
@@ -31,7 +31,11 @@ require (
 	github.com/urfave/negroni v1.0.0
 	github.com/valyala/fasthttp v1.8.0
 	go.uber.org/atomic v1.4.0 // indirect
-	google.golang.org/grpc v1.24.0
+	golang.org/x/net v0.0.0-20200320220750-118fecf932d8 // indirect
+	golang.org/x/sys v0.0.0-20200323222414-85ca7c5b95cd // indirect
+	google.golang.org/genproto v0.0.0-20200323114720-3f67cca34472 // indirect
+	google.golang.org/grpc v1.28.0
+	google.golang.org/protobuf v1.20.1
 	gopkg.in/yaml.v2 v2.2.4
 	k8s.io/api v0.17.0
 	k8s.io/apimachinery v0.17.0

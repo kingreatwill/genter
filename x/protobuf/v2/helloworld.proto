@@ -1,0 +1,50 @@
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// go install google.golang.org/protobuf/cmd/protoc-gen-go
+// protoc --plugin=protoc-gen-go=C:\Users\35084\go\bin\protoc-gen-go.exe --go_out=.  helloworld.proto
+// 不行 protoc --plugin=protoc-gen-go=C:\Users\35084\go\bin\protoc-gen-go.exe --go-grpc_out=. --go_out=.  helloworld.proto
+// 不行 protoc --go_out=plugins=grpc:. helloworld.proto
+// 不行 protoc --proto_path=. helloworld.proto --go_out=plugins=grpc:.
+// 最终找到：https://github.com/protocolbuffers/protobuf-go/releases/tag/v1.20.0#v1.20-grpc-support
+// The v1.20 protoc-gen-go does not support generating gRPC service definitions.In the future, gRPC service generation will be supported by a new protoc-gen-go-grpc plugin provided by the Go gRPC project.
+//
+//The github.com/golang/protobuf version of protoc-gen-go continues to support gRPC and will continue to do so for the foreseeable future.
+// 总的意思就是grpc还不支持新的Protocol Buffers API，未来会提供protoc-gen-go-grpc --go-grpc_out=. 类似以下命令（与其它语言同步）
+// protoc-gen-go 只是生成proto协议的东西，不生成grpc相关的东西
+// protoc --plugin=protoc-gen-go-grpc=C:\Users\35084\go\bin\protoc-gen-go-grpc.exe --go-grpc_out=. --go_out=.  helloworld.proto
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.helloworld";
+option java_outer_classname = "HelloWorldProto";
+
+option go_package = ".;helloworld";
+// option go_package = "github.com/protocolbuffers/protobuf/examples/go/tutorialpb";
+
+// The greeting service definition.
+service Greeter {
+    // Sends a greeting
+    rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+    string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+    string message = 1;
+}

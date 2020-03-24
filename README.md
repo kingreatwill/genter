@@ -1,7 +1,16 @@
 # genter
 go
 
+
+google.golang.org/protobuf -> github.com/protocolbuffers/protobuf-go
+
 git rebase -i HEAD~4
+
+权限 https://github.com/ory/ladon
+
+https://github.com/casbin/casbin
+
+http://dashboard.casbin.org/
 
 go 源码学习：https://www.zhihu.com/question/327615791/answer/756625130
 
