@@ -79,3 +79,9 @@ https://github.com/dominikh/go-tools
 
 Leader 这样说对吗？还是自己动手验证 Go 逃逸分析
 https://mp.weixin.qq.com/s?__biz=MzAxMTA4Njc0OQ==&mid=2651437818&idx=1&sn=4f1e08a9b73b70c347033778b2d56b82
+
+
+
+https://www.cnblogs.com/KendoCross/p/10333145.html
+CQRS/ES toolkit for Go
+https://github.com/looplab/eventhorizon
